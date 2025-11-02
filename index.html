@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Will You Be Mine?</title>
+<style>
+  :root{
+    --accent:#ff4d6d;
+    --bg1:#ffe6e6;
+    --bg2:#fff0f5;
+  }
+  body{
+    margin:0;
+    height:100vh;
+    font-family:"Poppins",sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent);
+    text-align:center;
+    overflow:hidden;
+    flex-direction:column;
+  }
+  header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:rgba(255,255,255,0.8);
+    backdrop-filter:blur(8px);
+    color:var(--accent);
+    text-align:center;
+    padding:14px 0;
+    font-weight:700;
+    font-size:1.6rem;
+    letter-spacing:1px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    z-index:999;
+  }
+  .container{
+    max-width:720px;
+    padding:24px;
+    margin-top:60px;
+  }
+  h1{margin:0;font-size:1.9rem;}
+  p{margin:14px 0 30px 0;font-size:1rem;}
+  .buttons{
+    position:relative;
+    height:90px;
+  }
+  button{
+    padding:12px 28px;
+    border:none;
+    border-radius:26px;
+    font-size:1rem;
+    cursor:pointer;
+    transition:transform .15s ease;
+    position:absolute;
+  }
+  #yes{
+    background:var(--accent);
+    color:#fff;
+    left:35%;
+  }
+  #no{
+    background:#fff;
+    color:var(--accent);
+    border:2px solid var(--accent);
+    left:55%;
+  }
+  #message{
+    position:fixed;
+    top:15%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(255,255,255,0.85);
+    padding:12px 20px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:1.1rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+    box-shadow:0 4px 14px rgba(0,0,0,0.1);
+    z-index:10;
+  }
+  #final{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(255,255,255,0.96);
+    color:var(--accent);
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    z-index:999;
+  }
+  #final h2{font-size:2.2rem;margin-bottom:8px;}
+</style>
+</head>
+<body>
+<header>RAO Javaid</header>
+
+<div class="container" id="card">
+  <h1>Will You Be My Valentine? 💖</h1>
+  <p>From the instant your name touched my heart, the centuries of silence inside me learned how to sing again.</p>
+  <div class="buttons">
+    <button id="yes">Yes 💕</button>
+    <button id="no">No 💔</button>
+  </div>
+</div>
+
+<div id="message"></div>
+
+<div id="final">
+  <h2>I knew it! 🥰</h2>
+  <p>You just made my world brighter! 💞</p>
+</div>
+
+<script>
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const msg=document.getElementById("message");
+const final=document.getElementById("final");
+
+const pleadings=[
+  "Please think again 🥺",
+  "Are you sure, truly sure? 💔",
+  "One more chance — please 🙏",
+  "Don't be cruel, please 😭",
+  "Say yes and I'll write you sonnets ✍️",
+  "It feels like destiny — don't fight it 🌌",
+  "Please, just one little yes? 😘",
+  "Think of all the sunsets we could see 🌅",
+  "Come on, give this old heart a chance 💞",
+  "Promise I'll make you laugh every day 😂",
+  "If not now, then when? ⏳",
+  "Please? I mean it from the marrow 🫶",
+  "Don't send my heart back to the void 😢",
+  "Come on, destiny is waiting 🌌",
+  "Even Juliet would’ve said yes 😉",
+  "Please, I’ll stop moving if you do 😅",
+  "Say yes before I write another poem 📜",
+  "Mercy, my love, mercy 😩",
+  "Every no feels like thunder ⚡",
+  "You’re too cute to be this cruel 😢",
+  "Don’t break the universe’s plan 💞",
+  "One yes, and I’ll owe you forever ✨",
+  "If you say no again, I might cry 😭",
+];
+let idx=0;
+
+function showMsg(text){
+  msg.textContent=text;
+  msg.style.opacity="1";
+  clearTimeout(showMsg.timer);
+  showMsg.timer=setTimeout(()=>msg.style.opacity="0",3500);
+}
+
+function dodge(){
+  const btnW=no.offsetWidth;
+  const btnH=no.offsetHeight;
+  const maxX=window.innerWidth-btnW-20;
+  const maxY=window.innerHeight-btnH-100;
+  const newX=Math.random()*maxX;
+  const newY=Math.random()*maxY+60;
+  no.style.position="fixed";
+  no.style.left=`${newX}px`;
+  no.style.top=`${newY}px`;
+  no.style.transition="left .25s ease, top .25s ease";
+  showMsg(pleadings[idx]);
+  idx=(idx+1)%pleadings.length;
+}
+
+no.addEventListener("mouseenter",dodge);
+no.addEventListener("touchstart",e=>{e.preventDefault();dodge();});
+no.addEventListener("click",dodge);
+
+yes.addEventListener("click",()=>{
+  final.style.display="flex";
+});
+</script>
+</body>
+</html>
