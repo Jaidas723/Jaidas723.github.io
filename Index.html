@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rao Brothers Welding — Built to Last</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --iron: #F5F0EA;
+    --rust: #B5341F;
+    --forge: #D4620A;
+    --steel: #6b6257;
+    --slag: #EDE7DE;
+    --bone: #3a3028;
+    --white: #ffffff;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(245,240,234,0.95);
+    --border: #D8CFC4;
+    --footer-bg: #2a241e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--iron);
+    color: var(--bone);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--iron); }
+  ::-webkit-scrollbar-thumb { background: var(--rust); }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 4px; color: var(--bone); }
+  .nav-logo span { color: var(--rust); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--steel); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--rust); }
+  .nav-cta { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; background: var(--rust); color: var(--white); border: none; padding: 0.6rem 1.6rem; cursor: pointer; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--forge); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; background: var(--iron); }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 10rem 4rem 4rem 6rem; position: relative; z-index: 2; }
+  .hero-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+  .hero-tag::before { content: ''; display: inline-block; width: 40px; height: 2px; background: var(--rust); }
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 9vw, 9rem); line-height: 0.9; color: var(--bone); letter-spacing: 2px; margin-bottom: 2rem; }
+  .hero-title em { font-style: normal; display: block; -webkit-text-stroke: 2px var(--rust); color: transparent; }
+  .hero-sub { font-size: 1.05rem; font-weight: 300; color: var(--steel); line-height: 1.7; max-width: 420px; margin-bottom: 3rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; background: var(--rust); color: var(--white); border: none; padding: 1rem 2.5rem; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block; }
+  .btn-primary:hover { background: var(--forge); transform: translateY(-2px); }
+  .btn-secondary { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; background: transparent; color: var(--bone); border: 1px solid var(--border); padding: 1rem 2.5rem; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block; }
+  .btn-secondary:hover { border-color: var(--rust); color: var(--rust); }
+
+  .hero-right { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--slag); }
+  .steel-art { width: 100%; height: 100%; position: absolute; inset: 0; }
+
+  /* STATS */
+  .hero-stats { background: var(--rust); padding: 2rem 6rem; display: flex; gap: 4rem; flex-wrap: wrap; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--white); line-height: 1; }
+  .stat-num span { color: rgba(255,255,255,0.6); }
+  .stat-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+
+  /* TICKER */
+  .ticker { background: var(--bone); padding: 0.75rem 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-flex; animation: ticker 25s linear infinite; }
+  .ticker-item { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 4px; padding: 0 2rem; color: var(--iron); }
+  .ticker-dot { color: var(--rust); padding: 0 0.5rem; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { padding: 7rem 6rem; }
+  .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--rust); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
+  .section-label::before { content: ''; display: inline-block; width: 30px; height: 2px; background: var(--rust); }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 5vw, 5rem); color: var(--bone); line-height: 1; letter-spacing: 2px; }
+
+  /* SERVICES */
+  #services { background: var(--slag); }
+  .services-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 5rem; }
+  .services-desc { font-size: 1rem; font-weight: 300; color: var(--steel); line-height: 1.8; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card { background: var(--card-bg); padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.3s; cursor: default; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--rust); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { background: #fdf8f3; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(181,52,31,0.12); }
+  .service-icon { width: 52px; height: 52px; margin-bottom: 1.5rem; opacity: 0.9; }
+  .service-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #e8e0d6; position: absolute; top: 1rem; right: 1.5rem; line-height: 1; transition: color 0.3s; }
+  .service-card:hover .service-num { color: #ddd5c8; }
+  .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; color: var(--bone); letter-spacing: 2px; margin-bottom: 0.8rem; }
+  .service-desc { font-size: 0.88rem; font-weight: 300; color: var(--steel); line-height: 1.7; }
+
+  /* ABOUT */
+  #about { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center; padding: 7rem 6rem; background: var(--iron); }
+  .about-visual { position: relative; }
+  .about-frame { width: 100%; aspect-ratio: 4/5; background: var(--slag); position: relative; overflow: hidden; border: 1px solid var(--border); }
+  .about-frame svg { width: 100%; height: 100%; }
+  .about-badge { position: absolute; bottom: -1.5rem; right: -1.5rem; width: 130px; height: 130px; background: var(--rust); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .about-badge strong { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--white); line-height: 1; }
+  .about-badge span { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-top: 0.2rem; }
+  .about-text { font-size: 1rem; font-weight: 300; color: var(--steel); line-height: 1.9; margin: 1.5rem 0 2.5rem; }
+  .about-features { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+  .about-feature { display: flex; align-items: center; gap: 1rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--bone); }
+  .about-feature::before { content: ''; width: 8px; height: 8px; background: var(--rust); flex-shrink: 0; transform: rotate(45deg); }
+
+  /* PROCESS */
+  #process { background: var(--slag); padding: 7rem 6rem; }
+  .process-header { text-align: center; margin-bottom: 5rem; }
+  .process-header .section-label { justify-content: center; }
+  .process-header .section-label::before { display: none; }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+  .process-steps::before { content: ''; position: absolute; top: 2.5rem; left: 12%; right: 12%; height: 1px; background: linear-gradient(to right, var(--rust), var(--forge)); z-index: 0; }
+  .process-step { padding: 0 2rem; text-align: center; position: relative; z-index: 1; }
+  .step-circle { width: 5rem; height: 5rem; background: var(--white); border: 2px solid var(--rust); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--rust); transition: all 0.3s; box-shadow: 0 2px 10px rgba(181,52,31,0.15); }
+  .process-step:hover .step-circle { background: var(--rust); color: var(--white); }
+  .step-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; color: var(--bone); margin-bottom: 0.8rem; }
+  .step-desc { font-size: 0.85rem; font-weight: 300; color: var(--steel); line-height: 1.7; }
+
+  /* MATERIALS */
+  #materials { padding: 7rem 6rem; background: var(--iron); }
+  .materials-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; margin-top: 4rem; }
+  .materials-intro { font-size: 1rem; font-weight: 300; color: var(--steel); line-height: 1.9; }
+  .materials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .material-item { background: var(--card-bg); padding: 2rem; transition: all 0.2s; border: 1px solid var(--border); }
+  .material-item:hover { background: #fdf8f3; border-color: #c8bfb6; box-shadow: 0 4px 16px rgba(181,52,31,0.08); }
+  .material-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: var(--bone); margin-bottom: 0.5rem; }
+  .material-use { font-size: 0.8rem; font-weight: 300; color: var(--steel); letter-spacing: 1px; }
+  .material-bar { height: 3px; background: linear-gradient(to right, var(--rust), var(--forge)); margin-top: 1.2rem; transform-origin: left; animation: barGrow 1.5s ease forwards; }
+  @keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* TESTIMONIALS */
+  #testimonials { background: var(--slag); padding: 7rem 6rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 4rem; }
+  .testimonial-card { background: var(--card-bg); padding: 2.5rem; position: relative; border: 1px solid var(--border); transition: box-shadow 0.2s; }
+  .testimonial-card:hover { box-shadow: 0 6px 24px rgba(181,52,31,0.10); }
+  .testimonial-card::before { content: '"'; font-family: 'Bebas Neue', sans-serif; font-size: 8rem; color: var(--rust); opacity: 0.12; position: absolute; top: -1rem; left: 1.5rem; line-height: 1; }
+  .testimonial-text { font-size: 0.95rem; font-weight: 300; color: var(--bone); line-height: 1.8; margin-bottom: 2rem; position: relative; z-index: 1; }
+  .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+  .author-avatar { width: 44px; height: 44px; background: var(--rust); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--white); flex-shrink: 0; }
+  .author-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--bone); }
+  .author-role { font-size: 0.75rem; color: var(--steel); margin-top: 0.1rem; }
+
+  /* CONTACT */
+  #contact { padding: 7rem 6rem; background: var(--iron); }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; margin-top: 4rem; }
+  .contact-tagline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 3.5vw, 3.5rem); color: var(--bone); line-height: 1.1; margin-bottom: 2rem; letter-spacing: 1px; }
+  .contact-tagline em { font-style: normal; color: var(--rust); }
+  .contact-details { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; }
+  .contact-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+  .contact-icon { width: 42px; height: 42px; background: var(--slag); border-left: 3px solid var(--rust); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .contact-icon svg { width: 18px; height: 18px; }
+  .contact-meta strong { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--rust); display: block; margin-bottom: 0.2rem; }
+  .contact-meta span { font-size: 0.95rem; color: var(--bone); }
+
+  /* FORM */
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--steel); }
+  .form-group input, .form-group select, .form-group textarea { background: var(--card-bg); border: 1px solid var(--border); border-bottom: 2px solid #c8bfb6; color: var(--bone); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 0.85rem 1rem; outline: none; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--rust); }
+  .form-group select option { background: var(--white); color: var(--bone); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-submit { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; background: var(--rust); color: var(--white); border: none; padding: 1.1rem 3rem; cursor: pointer; transition: all 0.2s; align-self: flex-start; }
+  .form-submit:hover { background: var(--forge); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { background: var(--footer-bg); border-top: 3px solid var(--rust); padding: 4rem 6rem 2rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+  .footer-brand .nav-logo { font-size: 2rem; margin-bottom: 1rem; display: block; color: var(--white); }
+  .footer-brand .nav-logo span { color: var(--rust); }
+  .footer-tagline { font-size: 0.88rem; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 260px; }
+  .footer-col-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .footer-links a { font-size: 0.88rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.85); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+  .footer-copy span { color: var(--rust); }
+  .footer-socials { display: flex; gap: 1rem; }
+  .social-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .social-btn:hover { background: var(--rust); border-color: var(--rust); }
+  .social-btn svg { width: 15px; height: 15px; fill: rgba(255,255,255,0.4); }
+  .social-btn:hover svg { fill: var(--white); }
+
+  /* SPARKS */
+  .spark { position: fixed; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; z-index: 99998; animation: sparkFade 0.6s ease forwards; }
+  @keyframes sparkFade { 0% { opacity: 1; transform: scale(1) translate(0,0); } 100% { opacity: 0; transform: scale(0) translate(var(--dx), var(--dy)); } }
+
+  /* SCROLL REVEAL */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 8rem 1.5rem 2rem; }
+    .hero-right { display: none; }
+    .hero-stats { padding: 2rem 1.5rem; gap: 2rem; }
+    .services-header { grid-template-columns: 1fr; gap: 1rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    #about { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .process-steps::before { display: none; }
+    #process { padding: 4rem 1.5rem; }
+    .materials-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .materials-grid { grid-template-columns: 1fr; }
+    #materials { padding: 4rem 1.5rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    #testimonials { padding: 4rem 1.5rem; }
+    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    #contact { padding: 4rem 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 3rem 1.5rem 1.5rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">RAO <span>BROTHERS</span></span>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#materials">Materials</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-tag">Master Fabricator · Est. 2008</div>
+    <h1 class="hero-title">
+      FORGED IN<br>
+      <em>FIRE,</em>
+      BUILT TO<br>LAST
+    </h1>
+    <p class="hero-sub">
+      Precision welding and custom metal fabrication for homes, businesses, and industrial sites. From ornate security gates to structural solar frameworks — every weld, a signature.
+    </p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary">Our Services</a>
+      <a href="#contact" class="btn-secondary">Request Quote</a>
+    </div>
+  </div>
+
+  <!-- ANIMATED GATE HERO -->
+  <div class="hero-right">
+    <svg class="steel-art" viewBox="0 0 700 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#EDE7DE"/>
+          <stop offset="100%" stop-color="#E0D8CE"/>
+        </linearGradient>
+        <linearGradient id="gRust" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#B5341F"/>
+          <stop offset="100%" stop-color="#D4620A"/>
+        </linearGradient>
+        <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#D4620A" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#D4620A" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="fblur"><feGaussianBlur stdDeviation="14"/></filter>
+        <filter id="fshadow">
+          <feDropShadow dx="3" dy="6" stdDeviation="6" flood-color="#8a7e72" flood-opacity="0.25"/>
+        </filter>
+      </defs>
+
+      <rect width="700" height="800" fill="url(#gBg)"/>
+
+      <!-- grid -->
+      <g stroke="#ccc5bb" stroke-width="0.5" opacity="0.45">
+        <line x1="0" y1="100" x2="700" y2="100"/><line x1="0" y1="200" x2="700" y2="200"/>
+        <line x1="0" y1="300" x2="700" y2="300"/><line x1="0" y1="400" x2="700" y2="400"/>
+        <line x1="0" y1="500" x2="700" y2="500"/><line x1="0" y1="600" x2="700" y2="600"/>
+        <line x1="0" y1="700" x2="700" y2="700"/>
+        <line x1="100" y1="0" x2="100" y2="800"/><line x1="200" y1="0" x2="200" y2="800"/>
+        <line x1="300" y1="0" x2="300" y2="800"/><line x1="400" y1="0" x2="400" y2="800"/>
+        <line x1="500" y1="0" x2="500" y2="800"/><line x1="600" y1="0" x2="600" y2="800"/>
+      </g>
+
+      <!-- glow center -->
+      <ellipse cx="350" cy="400" rx="220" ry="220" fill="url(#gGlow)" filter="url(#fblur)"/>
+
+      <!-- LEFT GATE PANEL — slides in from left -->
+      <g filter="url(#fshadow)">
+        <g transform="translate(0,0)">
+          <animateTransform attributeName="transform" type="translate" from="-260 0" to="0 0" dur="2s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>
+          <rect x="78" y="158" width="244" height="484" fill="none" stroke="#8a7e72" stroke-width="4.5"/>
+          <rect x="83" y="163" width="234" height="474" fill="none" stroke="#b0a89e" stroke-width="1"/>
+          <line x1="128" y1="163" x2="128" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="173" y1="163" x2="173" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="218" y1="163" x2="218" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="263" y1="163" x2="263" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="308" y1="163" x2="308" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="83" y1="268" x2="317" y2="268" stroke="#8a7e72" stroke-width="2.5"/>
+          <line x1="83" y1="400" x2="317" y2="400" stroke="#8a7e72" stroke-width="2.5"/>
+          <line x1="83" y1="532" x2="317" y2="532" stroke="#8a7e72" stroke-width="2.5"/>
+          <!-- decorative scroll in center panel area -->
+          <circle cx="200" cy="334" r="22" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+          <circle cx="200" cy="334" r="12" fill="none" stroke="#c8bfb6" stroke-width="1"/>
+          <circle cx="200" cy="466" r="22" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+          <!-- spear tops -->
+          <polygon points="128,163 135,146 142,163" fill="#B5341F"/>
+          <polygon points="173,163 180,146 187,163" fill="#B5341F"/>
+          <polygon points="218,163 225,146 232,163" fill="#B5341F"/>
+          <polygon points="263,163 270,146 277,163" fill="#B5341F"/>
+          <polygon points="308,163 315,146 322,163" fill="#B5341F"/>
+          <!-- arch top -->
+          <path d="M 78 238 Q 200 104 322 238" fill="none" stroke="#8a7e72" stroke-width="4"/>
+          <path d="M 85 242 Q 200 118 315 242" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+        </g>
+      </g>
+
+      <!-- RIGHT GATE PANEL — slides in from right -->
+      <g filter="url(#fshadow)">
+        <g transform="translate(0,0)">
+          <animateTransform attributeName="transform" type="translate" from="260 0" to="0 0" dur="2s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>
+          <rect x="378" y="158" width="244" height="484" fill="none" stroke="#8a7e72" stroke-width="4.5"/>
+          <rect x="383" y="163" width="234" height="474" fill="none" stroke="#b0a89e" stroke-width="1"/>
+          <line x1="428" y1="163" x2="428" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="473" y1="163" x2="473" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="518" y1="163" x2="518" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="563" y1="163" x2="563" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="608" y1="163" x2="608" y2="637" stroke="#9a9088" stroke-width="3"/>
+          <line x1="383" y1="268" x2="617" y2="268" stroke="#8a7e72" stroke-width="2.5"/>
+          <line x1="383" y1="400" x2="617" y2="400" stroke="#8a7e72" stroke-width="2.5"/>
+          <line x1="383" y1="532" x2="617" y2="532" stroke="#8a7e72" stroke-width="2.5"/>
+          <circle cx="500" cy="334" r="22" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+          <circle cx="500" cy="334" r="12" fill="none" stroke="#c8bfb6" stroke-width="1"/>
+          <circle cx="500" cy="466" r="22" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+          <polygon points="428,163 435,146 442,163" fill="#B5341F"/>
+          <polygon points="473,163 480,146 487,163" fill="#B5341F"/>
+          <polygon points="518,163 525,146 532,163" fill="#B5341F"/>
+          <polygon points="563,163 570,146 577,163" fill="#B5341F"/>
+          <polygon points="608,163 615,146 622,163" fill="#B5341F"/>
+          <path d="M 378 238 Q 500 104 622 238" fill="none" stroke="#8a7e72" stroke-width="4"/>
+          <path d="M 385 242 Q 500 118 615 242" fill="none" stroke="#b0a89e" stroke-width="1.5"/>
+        </g>
+      </g>
+
+      <!-- Pillar posts (always visible) -->
+      <rect x="52" y="138" width="30" height="524" fill="#c8bfb6" stroke="#b0a89e" stroke-width="1.5"/>
+      <rect x="618" y="138" width="30" height="524" fill="#c8bfb6" stroke="#b0a89e" stroke-width="1.5"/>
+      <!-- post caps -->
+      <rect x="46" y="130" width="42" height="14" fill="#8a7e72" rx="2"/>
+      <rect x="612" y="130" width="42" height="14" fill="#8a7e72" rx="2"/>
+
+      <!-- Rust accent bars — fade in after gate closes -->
+      <rect x="78" y="152" width="544" height="9" fill="url(#gRust)" opacity="0">
+        <animate attributeName="opacity" values="0;0.9" dur="0.5s" begin="2.1s" fill="freeze"/>
+      </rect>
+      <rect x="78" y="639" width="544" height="9" fill="url(#gRust)" opacity="0">
+        <animate attributeName="opacity" values="0;0.9" dur="0.5s" begin="2.1s" fill="freeze"/>
+      </rect>
+
+      <!-- Weld spark at join — appears when gate panels meet -->
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.2s" begin="2.2s" fill="freeze"/>
+        <circle cx="350" cy="400" r="12" fill="#D4620A" opacity="0.85">
+          <animate attributeName="r" values="12;20;12" dur="1.4s" begin="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.85;0.2;0.85" dur="1.4s" begin="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="350" cy="400" r="4" fill="#fff">
+          <animate attributeName="opacity" values="1;0.1;1" dur="0.5s" begin="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <line x1="350" y1="400" x2="325" y2="373" stroke="#D4620A" stroke-width="2" opacity="0">
+          <animate attributeName="opacity" values="0;0.9;0" dur="0.55s" begin="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="325;312;325" dur="0.55s" begin="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="373;358;373" dur="0.55s" begin="2.2s" repeatCount="indefinite"/>
+        </line>
+        <line x1="350" y1="400" x2="375" y2="372" stroke="#FFD700" stroke-width="1.5" opacity="0">
+          <animate attributeName="opacity" values="0;0.85;0" dur="0.45s" begin="2.3s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="375;388;375" dur="0.45s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="372;356;372" dur="0.45s" repeatCount="indefinite"/>
+        </line>
+        <line x1="350" y1="400" x2="332" y2="424" stroke="#B5341F" stroke-width="1" opacity="0">
+          <animate attributeName="opacity" values="0;0.7;0" dur="0.65s" begin="2.4s" repeatCount="indefinite"/>
+        </line>
+        <line x1="350" y1="400" x2="371" y2="420" stroke="#FFD700" stroke-width="1.5" opacity="0">
+          <animate attributeName="opacity" values="0;0.8;0" dur="0.4s" begin="2.25s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="371;382;371" dur="0.4s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="420;430;420" dur="0.4s" repeatCount="indefinite"/>
+        </line>
+      </g>
+
+      <!-- Corner diamonds — fade in -->
+      <polygon points="52,138 67,123 82,138 67,153" fill="#B5341F" opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.4s" begin="2s" fill="freeze"/>
+      </polygon>
+      <polygon points="618,138 633,123 648,138 633,153" fill="#B5341F" opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.4s" begin="2s" fill="freeze"/>
+      </polygon>
+      <polygon points="52,648 67,633 82,648 67,663" fill="#B5341F" opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.4s" begin="2s" fill="freeze"/>
+      </polygon>
+      <polygon points="618,648 633,633 648,648 633,663" fill="#B5341F" opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.4s" begin="2s" fill="freeze"/>
+      </polygon>
+
+      <text x="350" y="755" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="18" fill="#b0a89e" letter-spacing="8" opacity="0.55">CUSTOM FABRICATION</text>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="hero-stats">
+  <div class="stat-item"><div class="stat-num">15<span>+</span></div><div class="stat-label">Years Experience</div></div>
+  <div class="stat-item"><div class="stat-num">600<span>+</span></div><div class="stat-label">Projects Completed</div></div>
+  <div class="stat-item"><div class="stat-num">98<span>%</span></div><div class="stat-label">Client Satisfaction</div></div>
+  <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Core Specialties</div></div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">CUSTOM WINDOWS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SECURITY DOORS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">ORNAMENTAL GATES</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">STEEL STAIRCASES</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SECURITY GRILLS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SOLAR STRUCTURES</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">CUSTOM WINDOWS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SECURITY DOORS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">ORNAMENTAL GATES</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">STEEL STAIRCASES</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SECURITY GRILLS</span><span class="ticker-dot">◆</span>
+    <span class="ticker-item">SOLAR STRUCTURES</span><span class="ticker-dot">◆</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-label">What We Build</div>
+      <h2 class="section-title">STEEL CRAFTED<br>FOR EVERY NEED</h2>
+    </div>
+    <p class="services-desc">From intricate window frames to industrial-grade solar panel mounts — each piece is engineered to your exact specification. No templates, no shortcuts. Every job gets the full treatment.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-num">01</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><rect x="4" y="4" width="44" height="44" stroke="#B5341F" stroke-width="2.5"/><line x1="4" y1="26" x2="48" y2="26" stroke="#8a7e72" stroke-width="2"/><line x1="26" y1="4" x2="26" y2="48" stroke="#8a7e72" stroke-width="2"/><rect x="8" y="8" width="14" height="14" fill="#EDE7DE" stroke="#c8bfb6"/><rect x="30" y="8" width="14" height="14" fill="#EDE7DE" stroke="#c8bfb6"/><rect x="8" y="30" width="14" height="14" fill="#EDE7DE" stroke="#c8bfb6"/><rect x="30" y="30" width="14" height="14" fill="#EDE7DE" stroke="#c8bfb6"/></svg>
+      <div class="service-name">Steel Windows</div>
+      <p class="service-desc">Custom-fabricated steel window frames built for security, precision fit, and long-term durability. Burglar bars and decorative grills available.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.1s">
+      <div class="service-num">02</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><rect x="8" y="2" width="36" height="48" stroke="#B5341F" stroke-width="2.5"/><rect x="12" y="8" width="12" height="16" stroke="#8a7e72" stroke-width="1.5"/><rect x="12" y="28" width="12" height="16" stroke="#8a7e72" stroke-width="1.5"/><rect x="28" y="8" width="12" height="16" stroke="#8a7e72" stroke-width="1.5"/><rect x="28" y="28" width="12" height="16" stroke="#8a7e72" stroke-width="1.5"/><circle cx="38" cy="26" r="2" fill="#B5341F"/></svg>
+      <div class="service-name">Security Doors</div>
+      <p class="service-desc">Heavy-duty steel security doors with concealed hinge options. Powder-coated or raw steel finish, fitted to any opening.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.2s">
+      <div class="service-num">03</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><line x1="4" y1="4" x2="4" y2="48" stroke="#B5341F" stroke-width="3"/><line x1="48" y1="4" x2="48" y2="48" stroke="#B5341F" stroke-width="3"/><line x1="4" y1="12" x2="48" y2="12" stroke="#8a7e72" stroke-width="1.5"/><line x1="4" y1="40" x2="48" y2="40" stroke="#8a7e72" stroke-width="1.5"/><line x1="14" y1="4" x2="14" y2="48" stroke="#9a9088" stroke-width="1.5"/><line x1="24" y1="4" x2="24" y2="48" stroke="#9a9088" stroke-width="1.5"/><line x1="34" y1="4" x2="34" y2="48" stroke="#9a9088" stroke-width="1.5"/><polygon points="4,4 8,0 12,4" fill="#B5341F"/><polygon points="14,4 18,0 22,4" fill="#B5341F"/><polygon points="24,4 28,0 32,4" fill="#B5341F"/><polygon points="34,4 38,0 42,4" fill="#B5341F"/><polygon points="44,4 48,0 52,4" fill="#B5341F"/></svg>
+      <div class="service-name">Gates & Fencing</div>
+      <p class="service-desc">Sliding, swing, and automated-ready gates for residential and commercial properties. Spear-top, flat, or custom decorative styles.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.3s">
+      <div class="service-num">04</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><rect x="4" y="40" width="14" height="8" stroke="#B5341F" stroke-width="2"/><rect x="18" y="30" width="14" height="18" stroke="#B5341F" stroke-width="2"/><rect x="32" y="20" width="16" height="28" stroke="#B5341F" stroke-width="2"/><line x1="4" y1="40" x2="48" y2="8" stroke="#8a7e72" stroke-width="1.5" stroke-dasharray="3,3"/></svg>
+      <div class="service-name">Steel Staircases</div>
+      <p class="service-desc">Structural and aesthetic staircases — straight, spiral, or floating — with matching balustrades and handrails crafted from solid steel or combined with wood.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.4s">
+      <div class="service-num">05</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><rect x="4" y="4" width="44" height="44" stroke="#B5341F" stroke-width="2.5" rx="2"/><line x1="4" y1="14" x2="48" y2="14" stroke="#8a7e72" stroke-width="1.5"/><line x1="4" y1="22" x2="48" y2="22" stroke="#8a7e72" stroke-width="1.5"/><line x1="4" y1="30" x2="48" y2="30" stroke="#8a7e72" stroke-width="1.5"/><line x1="4" y1="38" x2="48" y2="38" stroke="#8a7e72" stroke-width="1.5"/><line x1="14" y1="4" x2="14" y2="48" stroke="#b0a89e" stroke-width="1"/><line x1="22" y1="4" x2="22" y2="48" stroke="#b0a89e" stroke-width="1"/><line x1="30" y1="4" x2="30" y2="48" stroke="#b0a89e" stroke-width="1"/><line x1="38" y1="4" x2="38" y2="48" stroke="#b0a89e" stroke-width="1"/></svg>
+      <div class="service-name">Security Grills</div>
+      <p class="service-desc">Window and door grills in fixed or retractable configurations. Decorative designs that don't compromise on strength or anti-tamper integrity.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.5s">
+      <div class="service-num">06</div>
+      <svg class="service-icon" viewBox="0 0 52 52" fill="none"><rect x="4" y="18" width="44" height="26" stroke="#B5341F" stroke-width="2.5" rx="1"/><line x1="4" y1="31" x2="48" y2="31" stroke="#8a7e72" stroke-width="1.5"/><line x1="18" y1="18" x2="18" y2="44" stroke="#8a7e72" stroke-width="1.5"/><line x1="34" y1="18" x2="34" y2="44" stroke="#8a7e72" stroke-width="1.5"/><line x1="4" y1="44" x2="10" y2="50" stroke="#B5341F" stroke-width="2"/><line x1="48" y1="44" x2="42" y2="50" stroke="#B5341F" stroke-width="2"/><line x1="10" y1="50" x2="42" y2="50" stroke="#B5341F" stroke-width="2"/><circle cx="26" cy="10" r="5" stroke="#D4620A" stroke-width="1.5"/><line x1="26" y1="2" x2="26" y2="5" stroke="#D4620A" stroke-width="1.5"/><line x1="34" y1="4" x2="32" y2="7" stroke="#D4620A" stroke-width="1.5"/><line x1="38" y1="10" x2="35" y2="10" stroke="#D4620A" stroke-width="1.5"/></svg>
+      <div class="service-name">Solar Structures</div>
+      <p class="service-desc">Hot-dip galvanized or powder-coated steel mounting frames for rooftop and ground-mounted solar installations. Built to withstand years of weather and load.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-visual">
+    <div class="about-frame">
+      <!-- ANIMATED WELDER FIGURE -->
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gAb" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#EDE7DE"/><stop offset="100%" stop-color="#E0D8CE"/>
+          </linearGradient>
+          <linearGradient id="gBd" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#8a7e72"/><stop offset="100%" stop-color="#6b6257"/>
+          </linearGradient>
+          <radialGradient id="gSp" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4620A" stop-opacity="0.75"/>
+            <stop offset="100%" stop-color="#D4620A" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="fglow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <rect width="400" height="500" fill="url(#gAb)"/>
+        <!-- grid -->
+        <g stroke="#ccc5bb" stroke-width="0.5" opacity="0.35">
+          <line x1="0" y1="50" x2="400" y2="50"/><line x1="0" y1="100" x2="400" y2="100"/>
+          <line x1="0" y1="150" x2="400" y2="150"/><line x1="0" y1="200" x2="400" y2="200"/>
+          <line x1="0" y1="250" x2="400" y2="250"/><line x1="0" y1="300" x2="400" y2="300"/>
+          <line x1="0" y1="350" x2="400" y2="350"/><line x1="0" y1="400" x2="400" y2="400"/>
+          <line x1="0" y1="450" x2="400" y2="450"/>
+          <line x1="50" y1="0" x2="50" y2="500"/><line x1="100" y1="0" x2="100" y2="500"/>
+          <line x1="150" y1="0" x2="150" y2="500"/><line x1="200" y1="0" x2="200" y2="500"/>
+          <line x1="250" y1="0" x2="250" y2="500"/><line x1="300" y1="0" x2="300" y2="500"/>
+          <line x1="350" y1="0" x2="350" y2="500"/>
+        </g>
+        <!-- work table -->
+        <rect x="55" y="312" width="290" height="13" fill="#8a7e72" rx="2"/>
+        <rect x="75" y="325" width="9" height="78" fill="#6b6257"/>
+        <rect x="316" y="325" width="9" height="78" fill="#6b6257"/>
+        <!-- workpiece -->
+        <rect x="95" y="298" width="210" height="16" fill="#b0a89e" stroke="#9a9088" stroke-width="1.5"/>
+        <rect x="115" y="291" width="55" height="10" fill="#c8bfb6" stroke="#9a9088" stroke-width="1"/>
+        <rect x="230" y="291" width="55" height="10" fill="#c8bfb6" stroke="#9a9088" stroke-width="1"/>
+        <!-- body — breathing -->
+        <rect x="163" y="175" width="74" height="97" fill="url(#gBd)" rx="6">
+          <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+        </rect>
+        <!-- head -->
+        <ellipse cx="200" cy="143" rx="33" ry="36" fill="#8a7e72">
+          <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+        </ellipse>
+        <!-- helmet -->
+        <rect x="166" y="108" width="68" height="57" fill="#3a3028" rx="4">
+          <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+        </rect>
+        <!-- visor — orange glow pulse -->
+        <rect x="176" y="120" width="48" height="30" rx="2">
+          <animate attributeName="fill" values="#1a1510;#7a3a10;#1a1510" dur="1.3s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="176" y="120" width="48" height="30" rx="2" fill="#D4620A" opacity="0">
+          <animate attributeName="opacity" values="0;0.4;0" dur="1.3s" repeatCount="indefinite"/>
+        </rect>
+        <!-- left arm - swings slightly -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 165 195;-6 165 195;0 165 195" dur="2.1s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+          <rect x="112" y="183" width="55" height="23" fill="#6b6257" rx="5" transform="rotate(-28 139 194)"/>
+        </g>
+        <!-- right arm -->
+        <rect x="237" y="183" width="48" height="23" fill="#6b6257" rx="5" transform="rotate(8 261 194)"/>
+        <!-- torch -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 112 242;-4 112 242;0 112 242" dur="2.1s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+          <rect x="86" y="224" width="58" height="11" fill="#4a4038" rx="3" transform="rotate(14 115 229)"/>
+          <rect x="52" y="263" width="20" height="7" fill="#6b6257" rx="2" transform="rotate(14 62 266)"/>
+          <path d="M 144 230 Q 172 242 176 262" fill="none" stroke="#3a3028" stroke-width="4.5" stroke-linecap="round"/>
+        </g>
+        <!-- legs -->
+        <rect x="170" y="270" width="26" height="88" fill="#5a5248" rx="3"/>
+        <rect x="204" y="270" width="26" height="88" fill="#5a5248" rx="3"/>
+        <!-- boots -->
+        <rect x="162" y="352" width="35" height="17" fill="#3a3028" rx="3"/>
+        <rect x="203" y="352" width="35" height="17" fill="#3a3028" rx="3"/>
+        <!-- spark glow on workpiece -->
+        <ellipse cx="172" cy="296" rx="20" ry="11" fill="url(#gSp)" filter="url(#fglow)">
+          <animate attributeName="rx" values="20;28;20" dur="0.85s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;0.25;0.8" dur="0.85s" repeatCount="indefinite"/>
+        </ellipse>
+        <circle cx="172" cy="296" r="3.5" fill="#FFD700">
+          <animate attributeName="opacity" values="1;0.1;1" dur="0.42s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="3.5;7;3.5" dur="0.42s" repeatCount="indefinite"/>
+        </circle>
+        <!-- flying sparks -->
+        <line x1="172" y1="296" x2="148" y2="271" stroke="#D4620A" stroke-width="1.5" opacity="0">
+          <animate attributeName="opacity" values="0;0.9;0" dur="0.6s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="148;136;148" dur="0.6s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="271;255;271" dur="0.6s" repeatCount="indefinite"/>
+        </line>
+        <line x1="172" y1="296" x2="196" y2="269" stroke="#FFD700" stroke-width="1.2" opacity="0">
+          <animate attributeName="opacity" values="0;0.85;0" dur="0.5s" begin="0.15s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="196;208;196" dur="0.5s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="269;254;269" dur="0.5s" repeatCount="indefinite"/>
+        </line>
+        <line x1="172" y1="296" x2="156" y2="320" stroke="#B5341F" stroke-width="1" opacity="0">
+          <animate attributeName="opacity" values="0;0.7;0" dur="0.72s" begin="0.3s" repeatCount="indefinite"/>
+        </line>
+        <line x1="172" y1="296" x2="190" y2="316" stroke="#FFD700" stroke-width="1.5" opacity="0">
+          <animate attributeName="opacity" values="0;0.8;0" dur="0.44s" begin="0.1s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="190;200;190" dur="0.44s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="316;325;316" dur="0.44s" repeatCount="indefinite"/>
+        </line>
+        <!-- bottom stripe -->
+        <rect x="0" y="470" width="400" height="30" fill="#B5341F" opacity="0.9"/>
+        <text x="200" y="491" text-anchor="middle" font-family="'Bebas Neue', sans-serif" font-size="14" fill="white" letter-spacing="6">THE CRAFTSMAN</text>
+      </svg>
+    </div>
+    <div class="about-badge"><strong>15</strong><span>Years of<br>Craftsmanship</span></div>
+  </div>
+  <div class="about-content">
+    <div class="section-label">About Rao Brothers</div>
+    <h2 class="section-title">STEEL IS OUR<br>LANGUAGE</h2>
+    <p class="about-text">
+      Rao Brothers was built on the shop floor, not in an office. With over 15 years of hands-on fabrication based in Usman Koria, we've welded everything from intricate residential gates to load-bearing solar mounting systems. We don't outsource. We don't cut corners. Every piece that leaves our workshop carries our name — and we take that seriously.
+      <br><br>
+      Our team combines old-school trade knowledge with modern finishing and coating technology. Whether you need a simple window grill or a full architectural steel staircase, we approach it the same way: measure twice, weld once.
+    </p>
+    <div class="about-features">
+      <div class="about-feature">Structural integrity certified on all load-bearing work</div>
+      <div class="about-feature">Custom design from your sketch or specification</div>
+      <div class="about-feature">Powder coat, galvanizing, and raw-steel finishes</div>
+      <div class="about-feature">On-site measurement and installation available</div>
+      <div class="about-feature">Residential, commercial, and industrial projects</div>
+    </div>
+    <a href="#contact" class="btn-primary">Work With Us</a>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">FROM CONCEPT<br>TO INSTALLATION</h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step fade-up">
+      <div class="step-circle">01</div>
+      <div class="step-title">Consultation</div>
+      <p class="step-desc">We discuss your project needs, site conditions, preferred finish, and timeline. No obligation, just straight talk.</p>
+    </div>
+    <div class="process-step fade-up" style="transition-delay:0.15s">
+      <div class="step-circle">02</div>
+      <div class="step-title">Measurement</div>
+      <p class="step-desc">Our team visits your site to take precise measurements and assess structural requirements before any metal is cut.</p>
+    </div>
+    <div class="process-step fade-up" style="transition-delay:0.3s">
+      <div class="step-circle">03</div>
+      <div class="step-title">Fabrication</div>
+      <p class="step-desc">Every component is cut, welded, and finished in our workshop using quality steel and professional-grade equipment.</p>
+    </div>
+    <div class="process-step fade-up" style="transition-delay:0.45s">
+      <div class="step-circle">04</div>
+      <div class="step-title">Installation</div>
+      <p class="step-desc">We handle delivery and installation ourselves. No handoff to a third party — the same team that built it fits it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section id="materials">
+  <div class="section-label">Materials We Work With</div>
+  <h2 class="section-title">RIGHT METAL<br>FOR EVERY JOB</h2>
+  <div class="materials-layout">
+    <p class="materials-intro">Material selection is critical. We don't use one metal for every project. Depending on your load requirements, environment, aesthetics, and budget — we'll recommend exactly what's needed and explain why.</p>
+    <div class="materials-grid">
+      <div class="material-item fade-up"><div class="material-name">Mild Steel</div><div class="material-use">Gates, doors, windows, staircases</div><div class="material-bar" style="width:90%"></div></div>
+      <div class="material-item fade-up" style="transition-delay:0.1s"><div class="material-name">Square Tubing</div><div class="material-use">Frames, grills, solar structures</div><div class="material-bar" style="width:85%"></div></div>
+      <div class="material-item fade-up" style="transition-delay:0.2s"><div class="material-name">Angle Iron</div><div class="material-use">Supports, frames, flanges</div><div class="material-bar" style="width:80%"></div></div>
+      <div class="material-item fade-up" style="transition-delay:0.3s"><div class="material-name">Flat Bar</div><div class="material-use">Decorative elements, stiffeners</div><div class="material-bar" style="width:70%"></div></div>
+      <div class="material-item fade-up" style="transition-delay:0.4s"><div class="material-name">Round Bar</div><div class="material-use">Spear tops, balusters, handles</div><div class="material-bar" style="width:75%"></div></div>
+      <div class="material-item fade-up" style="transition-delay:0.5s"><div class="material-name">Galvanised</div><div class="material-use">Outdoor &amp; coastal environments</div><div class="material-bar" style="width:65%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-label">Client Feedback</div>
+  <h2 class="section-title">WHAT THEY SAY</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <p class="testimonial-text">Had Rao Brothers fabricate sliding gates and window grills for my entire property. The finish was clean, the installation was fast, and the price was honest. Will use them again without hesitation.</p>
+      <div class="testimonial-author"><div class="author-avatar">AK</div><div><div class="author-name">Asad Khan</div><div class="author-role">Homeowner, Usman Koria</div></div></div>
+    </div>
+    <div class="testimonial-card fade-up" style="transition-delay:0.15s">
+      <p class="testimonial-text">We needed a full steel staircase for our office building — complex landing, specific load requirements. Rao Brothers delivered exactly to spec. The structural quality is outstanding. Highly recommend for commercial work.</p>
+      <div class="testimonial-author"><div class="author-avatar">SM</div><div><div class="author-name">Sana Malik</div><div class="author-role">Project Manager, Commercial Build</div></div></div>
+    </div>
+    <div class="testimonial-card fade-up" style="transition-delay:0.3s">
+      <p class="testimonial-text">The solar mounting frames they built are still standing strong after two rainy seasons. Zero rust, zero movement. They clearly know what they're doing with galvanized steel outdoors.</p>
+      <div class="testimonial-author"><div class="author-avatar">ZR</div><div><div class="author-name">Zain Rauf</div><div class="author-role">Solar Installer, Off-Grid Systems</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in Touch</div>
+  <h2 class="section-title">START YOUR<br>PROJECT TODAY</h2>
+  <div class="contact-layout">
+    <div class="contact-info">
+      <p class="contact-tagline">Tell us what you need.<br>We'll tell you <em>exactly</em><br>how to build it.</p>
+      <div class="contact-details">
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#B5341F" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.14 2.19 2 2 0 012.11 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.14 7.86a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.09v2.83z"/></svg></div>
+          <div class="contact-meta"><strong>Call or WhatsApp</strong><span>0300-9473771</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#B5341F" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="contact-meta"><strong>Email</strong><span>raorashid557@gmail.com</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#B5341F" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="contact-meta"><strong>Workshop</strong><span>Usman Koria</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#B5341F" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
+          <div class="contact-meta"><strong>Working Hours</strong><span>Mon – Sat: 7:00 AM – 6:00 PM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Full name"></div>
+        <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" placeholder="03XX-XXXXXXX"></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+      <div class="form-group">
+        <label>Service Required</label>
+        <select>
+          <option value="">Select a service</option>
+          <option>Steel Windows</option><option>Security Doors</option><option>Gates &amp; Fencing</option>
+          <option>Steel Staircases</option><option>Security Grills</option><option>Solar Panel Structures</option>
+          <option>Multiple Services</option><option>Other / Not Sure</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Project Description</label><textarea placeholder="Briefly describe your project — size, location, preferred finish, timeline..."></textarea></div>
+      <button class="form-submit" onclick="this.textContent='Message Sent ✓'; this.style.background='#2e7d46';">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="nav-logo">RAO <span>BROTHERS</span></span>
+      <p class="footer-tagline">Custom steel fabrication for homes, businesses, and industrial applications. Built by hand, built to last.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Steel Windows</a></li><li><a href="#services">Security Doors</a></li>
+        <li><a href="#services">Gates &amp; Fencing</a></li><li><a href="#services">Staircases</a></li>
+        <li><a href="#services">Security Grills</a></li><li><a href="#services">Solar Structures</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li><li><a href="#process">Our Process</a></li>
+        <li><a href="#materials">Materials</a></li><li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="tel:03009473771">0300-9473771</a></li>
+        <li><a href="mailto:raorashid557@gmail.com">raorashid557@gmail.com</a></li>
+        <li><a href="#contact">Usman Koria</a></li>
+        <li><a href="#contact">Mon–Sat 7AM–6PM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 <span>Rao Brothers</span> Fabrication. All rights reserved.</p>
+    <div class="footer-socials">
+      <a class="social-btn" href="#" title="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a class="social-btn" href="https://wa.me/923009473771" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
+      <a class="social-btn" href="#" title="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Spark cursor
+  document.addEventListener('click', (e) => {
+    for (let i = 0; i < 8; i++) {
+      const s = document.createElement('div');
+      s.className = 'spark';
+      const a = Math.random() * Math.PI * 2;
+      const d = 20 + Math.random() * 40;
+      s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px`;
+      s.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      s.style.setProperty('--dy', Math.sin(a) * d + 'px');
+      s.style.background = Math.random() > 0.5 ? '#D4620A' : '#B5341F';
+      s.style.width = s.style.height = (3 + Math.random() * 5) + 'px';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 600);
+    }
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+  // Nav active state
+  const secs = document.querySelectorAll('section[id], div[id="about"]');
+  const links = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    links.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--rust)' : ''; });
+  });
+</script>
+</body>
+</html>
